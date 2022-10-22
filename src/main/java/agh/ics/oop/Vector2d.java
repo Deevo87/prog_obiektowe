@@ -14,14 +14,14 @@ public class Vector2d {
     }
 
     public boolean preceds(Vector2d other) {
-        if (other.x <= this.x && other.y <= this.y) {
+        if (this.x <= other.x && this.y <= other.y) {
             return true;
         }
         return false;
     }
 
     public boolean follows(Vector2d other){
-        if (other.x >= this.x & other.y >= this.x){
+        if (this.x >= other.x && this.y >= other.x){
             return true;
         }
         return false;
@@ -53,6 +53,21 @@ public class Vector2d {
         if (!(other instanceof Vector2d))
             return false;
         Vector2d that = (Vector2d) other;
-        return that.x == this.x && that.y == this.x;
+
+        return that.x == this.x && that.y == this.y;
+    }
+    // robi to samo co zwykłe follows ale z alternatywą zamiast koniunkcją
+    public boolean followsWithAlt(Vector2d other){
+        if (this.x >= other.x || this.y >= other.x){
+            return true;
+        }
+        return false;
+    }
+    // robi to samo co zwykłe preceds ale z alternatywą zamiast koniunkcją
+    public boolean precedsWithAlt(Vector2d other){
+        if (this.x <= other.x || this.y <= other.y) {
+            return true;
+        }
+        return false;
     }
 }
