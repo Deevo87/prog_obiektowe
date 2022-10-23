@@ -29,7 +29,6 @@ class AnimalTest {
         for (MoveDirection move : moves){
             animal.move(move);
         }
-        System.out.println(animal.isAt(new Vector2d(3, 4)));
         assertTrue(animal.isAt(new Vector2d(3, 4)));
     }
 

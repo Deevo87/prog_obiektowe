@@ -22,75 +22,87 @@ public class Animal {
         return this.position;
     }
     public void move(MoveDirection direction){
-        Vector2d maks = new Vector2d(5, 5);
-        Vector2d mini = new Vector2d(-1, -1);
+        Vector2d maks = new Vector2d(4, 4);
+        Vector2d mini = new Vector2d(0, 0);
         switch (direction){
             case RIGHT -> this.orientation = this.orientation.next();
             case LEFT -> this.orientation = this.orientation.previous();
             case BACKWARD -> {
-                switch (this.orientation) {
-                    case NORTH -> {
-                        this.position = this.position.add(new Vector2d(0, -1));{
-                            if (this.position.precedsWithAlt(mini)){
-                                System.out.println("kurwa mać");
-                                this.position = this.position.add(new Vector2d(0, 1));
-                            }
-                        }
-                    }
-                    case SOUTH -> {
-                        this.position = this.position.add(new Vector2d(0, 1));{
-                            if (this.position.precedsWithAlt(mini)){
-                                this.position = this.position.add(new Vector2d(0, -1));
-                            }
-                        }
-                    }
-                    case EAST -> {
-                        this.position = this.position.add(new Vector2d(-1, 0));{
-                            if (this.position.precedsWithAlt(mini)){
-                                this.position = this.position.add(new Vector2d(1, 0));
-                            }
-                        }
-                    }
-                    case WEST -> {
-                        this.position = this.position.add(new Vector2d(1, 0));{
-                            if (this.position.precedsWithAlt(mini)){
-                                this.position = this.position.add(new Vector2d(-1, 0));
-                            }
-                        }
-                    }
+                Vector2d save = this.position.subtract(this.orientation.toUnitVector());
+                if (save.preceds(maks) && save.follows(mini)){
+                    this.position = this.position.subtract(this.orientation.toUnitVector());
                 }
             }
             case FORWARD -> {
-                switch (this.orientation) {
-                    case NORTH -> {
-                        this.position = this.position.add(new Vector2d(0, 1));
-                        if (this.position.followsWithAlt(maks)){
-                            this.position = this.position.add(new Vector2d(0, -1));
-                        }
-                    }
-                    case SOUTH -> {
-                        this.position = this.position.add(new Vector2d(0, -1));
-                        if (this.position.followsWithAlt(mini)){
-                            this.position = this.position.add(new Vector2d(0, 1));
-                        }
-                    }
-                    case EAST -> {
-                        this.position = this.position.add(new Vector2d(1, 0));
-                        if (this.position.followsWithAlt(maks)){
-                            this.position = this.position.add(new Vector2d(-1, 0));
-                        }
-                    }
-                    case WEST -> {
-                        this.position = this.position.add(new Vector2d(-1, 0));
-                        if (this.position.followsWithAlt(mini)){
-                            this.position = this.position.add(new Vector2d(1, 0));
-                        }
-                    }
+                Vector2d save = this.position.add(this.orientation.toUnitVector());
+                if (save.preceds(maks) && save.follows(mini)){
+                    this.position = this.position.add(this.orientation.toUnitVector());
                 }
             }
-            default -> {
-                break;
-            }
+//            case BACKWARD -> {
+//                switch (this.orientation) {
+//                    case NORTH -> {
+//                        this.position = this.position.add(new Vector2d(0, -1));{
+//                            if (this.position.precedsWithAlt(mini)){
+//                                System.out.println("kurwa mać");
+//                                this.position = this.position.add(new Vector2d(0, 1));
+//                            }
+//                        }
+//                    }
+//                    case SOUTH -> {
+//                        this.position = this.position.add(new Vector2d(0, 1));{
+//                            if (this.position.precedsWithAlt(mini)){
+//                                this.position = this.position.add(new Vector2d(0, -1));
+//                            }
+//                        }
+//                    }
+//                    case EAST -> {
+//                        this.position = this.position.add(new Vector2d(-1, 0));{
+//                            if (this.position.precedsWithAlt(mini)){
+//                                this.position = this.position.add(new Vector2d(1, 0));
+//                            }
+//                        }
+//                    }
+//                    case WEST -> {
+//                        this.position = this.position.add(new Vector2d(1, 0));{
+//                            if (this.position.precedsWithAlt(mini)){
+//                                this.position = this.position.add(new Vector2d(-1, 0));
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            case FORWARD -> {
+//                switch (this.orientation) {
+//                    case NORTH -> {
+//                        this.position = this.position.add(new Vector2d(0, 1));
+//                        if (this.position.followsWithAlt(maks)){
+//                            this.position = this.position.add(new Vector2d(0, -1));
+//                        }
+//                    }
+//                    case SOUTH -> {
+//                        this.position = this.position.add(new Vector2d(0, -1));
+//                        if (this.position.followsWithAlt(mini)){
+//                            this.position = this.position.add(new Vector2d(0, 1));
+//                        }
+//                    }
+//                    case EAST -> {
+//                        this.position = this.position.add(new Vector2d(1, 0));
+//                        if (this.position.followsWithAlt(maks)){
+//                            this.position = this.position.add(new Vector2d(-1, 0));
+//                        }
+//                    }
+//                    case WEST -> {
+//                        this.position = this.position.add(new Vector2d(-1, 0));
+//                        if (this.position.followsWithAlt(mini)){
+//                            this.position = this.position.add(new Vector2d(1, 0));
+//                        }
+//                    }
+//                }
+//            }
+//            default -> {
+//                break;
+//            }
         }
     }
 }

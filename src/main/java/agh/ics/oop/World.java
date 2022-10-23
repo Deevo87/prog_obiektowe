@@ -31,45 +31,12 @@ public class World {
     }
 
     public static void main(String[] args) {
-//        LAB1
-//        System.out.println("##system rozpoczol dzialanie##");
-//        Direction[] list;
-//        list = convert_to_enum(args);
-//        run(list);
-//        System.out.println("##system zakonczyl dzialanie##");
-
-//        LAB2
-//        Vector2d position1 = new Vector2d(1,2);
-//        System.out.println((position1));
-//        Vector2d position2 = new Vector2d(-2,1);
-//        System.out.println(position2);
-//        System.out.println(position1.add(position2));
-//
-//        MapDirection d = MapDirection.NORTH;
-//        System.out.println(d.toString());
-//        System.out.println(d.next());
-//        System.out.println(d.previous());
-//        System.out.println(d.toUnitVector());
-
-//        LAB3
         Animal animal = new Animal();
-//        System.out.println(animal.toString());
-//        animal.move(MoveDirection.RIGHT);
-//        animal.move(MoveDirection.FORWARD);
-//        animal.move(MoveDirection.FORWARD);
-//        animal.move(MoveDirection.FORWARD);
-//        MoveDirection[] moves = new OptionsParser().parse(args);
-//        for (MoveDirection move : moves){
-//            animal.move(move);
-//        }
-//        System.out.println(animal.toString());
-
         MoveDirection[] moves2 = new OptionsParser().parse(args);
         for (MoveDirection move : moves2){
             animal.move(move);
+            System.out.println(animal.toString());
         }
-        System.out.println(animal.toString());
-        System.out.println(animal.isAt(new Vector2d(3, 4)));
     }
 }
 
