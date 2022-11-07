@@ -10,7 +10,6 @@ public class GrassField extends AbstractWorldMap{
 
     private final MapVisualizer map;
     private int quantity;
-    public List<Animal> animals;
     public List<Grass> grass;
 
     public GrassField(int quantity) {
@@ -48,7 +47,7 @@ public class GrassField extends AbstractWorldMap{
     }
 
     @Override
-    public boolean canMoveToG(Vector2d position) {
+    public boolean canMoveTo(Vector2d position) {
         for (Animal a : this.animals){
             if (a.isAt(position)){
                 return false;
@@ -57,17 +56,9 @@ public class GrassField extends AbstractWorldMap{
         return true;
     }
 
-    @Override
-    public boolean placeG(Animal animal) {
-        if (!isOccupied(animal.getPosition())){
-            this.animals.add(animal);
-            return true;
-        }
-        return false;
-    }
 
     @Override
-    public boolean isOccupiedG(Vector2d position) {
+    public boolean isOccupied(Vector2d position) {
         Object object = objectAt(position);
         if (object instanceof Animal){
             for (Animal a : this.animals){
@@ -87,7 +78,7 @@ public class GrassField extends AbstractWorldMap{
     }
 
     @Override
-    public Object objectAtG(Vector2d position) {
+    public Object objectAt(Vector2d position) {
         for (Animal a : this.animals){
             if (a.isAt(position)){
                 return a;

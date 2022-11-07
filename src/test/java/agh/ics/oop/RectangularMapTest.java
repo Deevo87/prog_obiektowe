@@ -4,17 +4,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GrassFieldTest {
+class RectangularMapTest {
     @Test
-    void test(){
+    void test() {
         String[] args = {"r", "l", "f", "f", "f"};
         MoveDirection[] directions = new OptionsParser().parse(args);
-        Vector2d[] positions = { new Vector2d(0,0), new Vector2d(4,5) };
-        IWorldMap map = new GrassField(10);
+        Vector2d[] positions = {new Vector2d(0, 0), new Vector2d(4, 5)};
+        IWorldMap map = new RectangularMap(10,10);
         SimulationEngine engine = new SimulationEngine(directions, map, positions);
-//        System.out.println(map.toString());
         engine.run();
-//        System.out.println(map.toString());
         assertEquals(new Vector2d(2, 0), engine.positionGetter(0));
         assertEquals(MapDirection.EAST, engine.orientationGetter(0));
 

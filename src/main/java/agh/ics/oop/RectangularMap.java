@@ -7,12 +7,8 @@ public class RectangularMap extends AbstractWorldMap {
 
     private final int width;
     private final int height;
-    public List<Animal> animals;
-
     public Vector2d maks;
     public Vector2d mini;
-
-    public MapVisualizer map;
 
     public RectangularMap(int width, int height){
         this.width = width;
@@ -29,7 +25,7 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
     @Override
-    public boolean canMoveToG(Vector2d position) {
+    public boolean canMoveTo(Vector2d position) {
         if (!isOccupied(position)){
             return position.follows(mini) && position.preceds(maks);
         }
@@ -37,16 +33,7 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
     @Override
-    public boolean placeG(Animal animal) {
-        if (!isOccupied(animal.getPosition())){
-            this.animals.add(animal);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isOccupiedG(Vector2d position) {
+    public boolean isOccupied(Vector2d position) {
         for (Animal a : this.animals){
             if (a.isAt(position)){
                 return true;
@@ -56,7 +43,7 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
     @Override
-    public Object objectAtG(Vector2d position) {
+    public Object objectAt(Vector2d position) {
         for (Animal a : this.animals){
             if (a.isAt(position)){
                 return a;
