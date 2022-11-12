@@ -1,95 +1,73 @@
 package agh.ics.oop;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
+import java.util.*;
 
 import static java.lang.Math.sqrt;
 
 
-public class GrassField extends AbstractWorldMap{
+public class GrassField extends AbstractWorldMap {
 
     private final MapVisualizer map;
-    private int quantity;
-    public List<Grass> grass;
+    private final int quantity;
 
     public GrassField(int quantity) {
         this.quantity = quantity;
-        this.grass = new ArrayList<>();
-        this.animals = new ArrayList<>();
+        this.objects = new HashMap<Vector2d, AbstractWorldElement>();
         this.map = new MapVisualizer(this);
 
+        makeGrass(quantity);
+    }
+    void makeGrass(int quantity){
         Random rand = new Random();
-        int bound = (int) sqrt((quantity*10)) + 1;
+        int bound = (int) sqrt((quantity * 10)) + 1;
         int random_x;
         int random_y;
         int i = 0;
-        boolean flag;
 
         while (i < this.quantity) {
             random_x = rand.nextInt(bound);
             random_y = rand.nextInt(bound);
             Vector2d random = new Vector2d(random_x, random_y);
-            if (!isOccupied(random)){
-                flag = false;
-                for (Grass g : this.grass) {
-                    if (g.getPosition().equals(random)) {
-                        flag = true;
-                        break;
-                    }
-                }
-                if (!flag) {
-                    Grass g = new Grass(random);
-                    this.grass.add(g);
-                    i += 1;
-                }
+            if (!isOccupied(random)) {
+                Grass g = new Grass(random);
+                this.objects.put(random, g);
+                i += 1;
             }
         }
     }
 
     @Override
     public boolean canMoveTo(Vector2d position) {
-        for (Animal a : this.animals){
-            if (a.isAt(position)){
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    @Override
-    public boolean isOccupied(Vector2d position) {
-        Object object = objectAt(position);
-        if (object instanceof Animal){
-            for (Animal a : this.animals){
-                if (a.isAt(position)){
-                    return true;
-                }
-            }
-        }
-        if (object instanceof Grass){
-            for (Grass g : this.grass) {
-                if (g.getPosition().equals(position)){
-                    return true;
-                }
-            }
+        if (!isOccupied(position)) {
+            return true;
+        } else if (objectAt(position) instanceof Grass) {
+            this.objects.remove(position);
+            this.makeGrass(1);
+            return true;
         }
         return false;
     }
 
     @Override
-    public Object objectAt(Vector2d position) {
-        for (Animal a : this.animals){
-            if (a.isAt(position)){
-                return a;
-            }
+    public boolean place(Animal animal) {
+        if (canMoveTo(animal.getPosition())){
+            this.objects.put(animal.getPosition(), animal);
+            animal.addObserver(this);
+            return true;
         }
-        for (Grass g : this.grass){
-            if (g.getPosition().equals(position)){
-                return g;
-            }
+        return false;
+    }
+
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        AbstractWorldElement Animal = this.objects.get(oldPosition);
+        AbstractWorldElement object = this.objects.get(newPosition);
+        if (object instanceof Grass) {
+            this.objects.remove(newPosition);
+            this.makeGrass(1);
         }
-        return null;
+        this.objects.remove(oldPosition);
+        this.objects.put(newPosition, Animal);
     }
 
     @Override
@@ -97,18 +75,18 @@ public class GrassField extends AbstractWorldMap{
         int maks_x = 0;
         int maks_y = 0;
 
-        for (Grass g : this.grass) {
-            if (g.getPosition().x > maks_x) {
-                maks_x = g.getPosition().x;
+        for (Vector2d g : this.objects.keySet()) {
+            if (g.x > maks_x) {
+                maks_x = g.x;
             }
-            if (g.getPosition().y > maks_y) {
-                maks_y = g.getPosition().y;
+            if (g.y > maks_y) {
+                maks_y = g.y;
             }
         }
         return new Vector2d(maks_x, maks_y);
     }
 
     public String toString() {
-        return this.map.draw(new Vector2d(0, 0) , maks());
+        return this.map.draw(new Vector2d(0, 0), maks());
     }
 }

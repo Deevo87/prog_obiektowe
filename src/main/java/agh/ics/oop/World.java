@@ -38,6 +38,8 @@ public class World {
         System.out.println(map.toString());
         engine.run();
         System.out.println(map.toString());
+        System.out.println(engine.positionGetter(0));
+        System.out.println(engine.positionGetter(1));
     }
 }
 

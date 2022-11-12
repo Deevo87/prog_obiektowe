@@ -1,6 +1,6 @@
 package agh.ics.oop;
 
-public class Grass {
+public class Grass extends AbstractWorldElement{
 
     private Vector2d grass_pos;
 
