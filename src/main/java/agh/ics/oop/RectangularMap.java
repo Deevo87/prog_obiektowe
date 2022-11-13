@@ -17,9 +17,11 @@ public class RectangularMap extends AbstractWorldMap{
     }
 
     @Override
-    public Vector2d maks() {
-        return null;
+    public void maks() {
     }
+
+    @Override
+    public void lower(){}
 
     @Override
     public boolean canMoveTo(Vector2d position) {

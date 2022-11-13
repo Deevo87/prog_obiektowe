@@ -14,6 +14,8 @@ public class GrassField extends AbstractWorldMap {
         this.quantity = quantity;
         this.objects = new HashMap<Vector2d, AbstractWorldElement>();
         this.map = new MapVisualizer(this);
+        this.lower = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        this.maks = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
         makeGrass(quantity);
     }
@@ -24,7 +26,7 @@ public class GrassField extends AbstractWorldMap {
         int random_y;
         int i = 0;
 
-        while (i < this.quantity) {
+        while (i < quantity) {
             random_x = rand.nextInt(bound);
             random_y = rand.nextInt(bound);
             Vector2d random = new Vector2d(random_x, random_y);
@@ -71,7 +73,7 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public Vector2d maks() {
+    public void maks() {
         int maks_x = 0;
         int maks_y = 0;
 
@@ -83,10 +85,28 @@ public class GrassField extends AbstractWorldMap {
                 maks_y = g.y;
             }
         }
-        return new Vector2d(maks_x, maks_y);
+        this.maks =  new Vector2d(maks_x, maks_y);
+    }
+
+    @Override
+    public void lower() {
+        int min_x = Integer.MAX_VALUE;
+        int min_y = Integer.MAX_VALUE;
+
+        for (Vector2d g : this.objects.keySet()) {
+            if (g.x < min_x) {
+                min_x = g.x;
+            }
+            if (g.y < min_y) {
+                min_y = g.y;
+            }
+        }
+        this.lower =  new Vector2d(min_x, min_y);
     }
 
     public String toString() {
-        return this.map.draw(new Vector2d(0, 0), maks());
+        lower();
+        maks();
+        return map.draw(this.lower, this.maks);
     }
 }

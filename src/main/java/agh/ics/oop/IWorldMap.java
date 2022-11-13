@@ -47,5 +47,7 @@ public interface IWorldMap {
      */
     Object objectAt(Vector2d position);
 
-    public Vector2d maks();
+    void maks();
+
+    void lower();
 }

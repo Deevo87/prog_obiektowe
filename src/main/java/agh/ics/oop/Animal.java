@@ -9,7 +9,7 @@ public class Animal extends AbstractWorldElement{
     private IWorldMap map;
 
     private Vector2d position;
-    private final List<IPositionChangeObserver> observers;
+    private List<IPositionChangeObserver> observers;
 
     public Animal(IWorldMap map, Vector2d initialPosition) {
         this.map = map;
@@ -46,16 +46,19 @@ public class Animal extends AbstractWorldElement{
             case BACKWARD -> {
                 Vector2d save = this.position.subtract(this.orientation.toUnitVector());
                 if (this.map.canMoveTo(save)){
+                    this.positionChanged(this.position, this.position.subtract(this.orientation.toUnitVector()));
                     this.position = this.position.subtract(this.orientation.toUnitVector());
                 }
             }
             case FORWARD -> {
                 Vector2d save = this.position.add(this.orientation.toUnitVector());
                 if (this.map.canMoveTo(save)){
+                    this.positionChanged(this.position, this.position.add(this.orientation.toUnitVector()));
                     this.position = this.position.add(this.orientation.toUnitVector());
                 }
             }
         }
+
     }
     void addObserver(IPositionChangeObserver observer) {
         this.observers.add(observer);
