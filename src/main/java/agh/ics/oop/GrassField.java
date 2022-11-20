@@ -7,13 +7,15 @@ import static java.lang.Math.sqrt;
 
 public class GrassField extends AbstractWorldMap {
 
-    private final MapVisualizer map;
+    private final MapVisualizer mapVis;
     private final int quantity;
+    private final MapBoundary mapBoundary;
 
     public GrassField(int quantity) {
+        this.mapBoundary = new MapBoundary(this);
         this.quantity = quantity;
         this.objects = new HashMap<Vector2d, AbstractWorldElement>();
-        this.map = new MapVisualizer(this);
+        this.mapVis = new MapVisualizer(this);
         this.lower = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
         this.maks = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
@@ -33,6 +35,7 @@ public class GrassField extends AbstractWorldMap {
             if (!isOccupied(random)) {
                 Grass g = new Grass(random);
                 this.objects.put(random, g);
+                this.mapBoundary.addToSet(g);
                 i += 1;
             }
         }
@@ -43,6 +46,7 @@ public class GrassField extends AbstractWorldMap {
         if (!isOccupied(position)) {
             return true;
         } else if (objectAt(position) instanceof Grass) {
+            this.mapBoundary.removeFromSet(objectAt(position));
             this.objects.remove(position);
             this.makeGrass(1);
             return true;
@@ -52,12 +56,13 @@ public class GrassField extends AbstractWorldMap {
 
     @Override
     public boolean place(Animal animal) {
-        if (canMoveTo(animal.getPosition())){
+        if (canMoveTo(animal.getPosition())) {
             this.objects.put(animal.getPosition(), animal);
             animal.addObserver(this);
+            this.mapBoundary.addToSet(animal);
             return true;
         }
-        return false;
+        throw new IllegalArgumentException(animal.getPosition().toString() + "is occupied, you can't place there another animal. :(");
     }
 
     @Override
@@ -66,47 +71,25 @@ public class GrassField extends AbstractWorldMap {
         AbstractWorldElement object = this.objects.get(newPosition);
         if (object instanceof Grass) {
             this.objects.remove(newPosition);
+            this.mapBoundary.removeFromSet(object);
             this.makeGrass(1);
         }
         this.objects.remove(oldPosition);
         this.objects.put(newPosition, Animal);
+        this.mapBoundary.positionChanged(oldPosition, newPosition);
     }
 
-    @Override
     public void maks() {
-        int maks_x = 0;
-        int maks_y = 0;
-
-        for (Vector2d g : this.objects.keySet()) {
-            if (g.x > maks_x) {
-                maks_x = g.x;
-            }
-            if (g.y > maks_y) {
-                maks_y = g.y;
-            }
-        }
-        this.maks =  new Vector2d(maks_x, maks_y);
+        this.maks = this.mapBoundary.getUpperRight();
     }
 
-    @Override
     public void lower() {
-        int min_x = Integer.MAX_VALUE;
-        int min_y = Integer.MAX_VALUE;
-
-        for (Vector2d g : this.objects.keySet()) {
-            if (g.x < min_x) {
-                min_x = g.x;
-            }
-            if (g.y < min_y) {
-                min_y = g.y;
-            }
-        }
-        this.lower =  new Vector2d(min_x, min_y);
+        this.lower =  this.mapBoundary.getLowerLeft();
     }
 
     public String toString() {
-        lower();
         maks();
-        return map.draw(this.lower, this.maks);
+        lower();
+        return mapVis.draw(this.lower, this.maks);
     }
 }

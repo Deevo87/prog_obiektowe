@@ -3,8 +3,7 @@ package agh.ics.oop;
 import java.util.HashMap;
 import java.util.Map;
 
-abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
-    protected MapVisualizer map;
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     protected Vector2d lower;
     protected Vector2d maks;
     Map<Vector2d, AbstractWorldElement> objects = new HashMap<Vector2d, AbstractWorldElement>();
@@ -18,7 +17,7 @@ abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     }
 
     @Override
-    public Object objectAt(Vector2d position) {
+    public AbstractWorldElement objectAt(Vector2d position) {
         return this.objects.get(position);
     }
 

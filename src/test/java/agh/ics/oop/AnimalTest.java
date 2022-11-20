@@ -10,7 +10,12 @@ class AnimalTest {
     IWorldMap map = new RectangularMap(10, 5);
     Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
 
-
+    @Test
+    void OptionParser() {
+        String[] args = {"balls" ,"r", "l", "f", "f", "f", "f", "f", "f", "r", "f", "f", "f", "f", "f", "f", "f",
+                "f", "f", "f", "f", "f"};
+        assertThrows(IllegalArgumentException.class, () -> new OptionsParser().parse(args));
+    }
     @Test
     void borders(){ // sprawdzam czy zwierzęta nie wychodzą za granice, czy mogą
         //wchodzić na pola zajęte przez inne zwierzęta, czy zmiana kierunków działa poprawnie
@@ -32,5 +37,14 @@ class AnimalTest {
         engine.run();
         assertEquals(MapDirection.EAST, engine.orientationGetter(0));
         assertEquals(MapDirection.SOUTH, engine.orientationGetter(1));
+    }
+
+    @Test
+    void placeTestBoundries() {
+        assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map ,new Vector2d(4,-20))));
+    }
+    @Test
+    void placeTestTaken() {
+        assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map ,new Vector2d(2,2))));
     }
 }

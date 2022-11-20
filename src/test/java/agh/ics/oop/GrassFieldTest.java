@@ -16,8 +16,14 @@ class GrassFieldTest {
         engine.run();
         assertEquals(new Vector2d(3, -6), engine.positionGetter(0));
         assertEquals(MapDirection.SOUTH, engine.orientationGetter(0));
-
         assertEquals(new Vector2d(-5, 5), engine.positionGetter(1));
         assertEquals(MapDirection.WEST, engine.orientationGetter(1));
+    }
+
+    @Test
+    void OptionParser() {
+        String[] args = {"balls" ,"r", "l", "f", "f", "f", "f", "f", "f", "r", "f", "f", "f", "f", "f", "f", "f",
+                "f", "f", "f", "f", "f"};
+        assertThrows(IllegalArgumentException.class, () -> new OptionsParser().parse(args));
     }
 }

@@ -16,7 +16,6 @@ public class Animal extends AbstractWorldElement{
         this.position = initialPosition;
         this.observers = new ArrayList<>();
     }
-
     private MapDirection orientation = MapDirection.NORTH;
 
     public String toString(){

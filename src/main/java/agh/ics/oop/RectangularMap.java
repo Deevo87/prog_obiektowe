@@ -2,6 +2,7 @@ package agh.ics.oop;
 
 
 public class RectangularMap extends AbstractWorldMap{
+    private final MapVisualizer mapVis;
 
     private final int width;
     private final int height;
@@ -13,15 +14,8 @@ public class RectangularMap extends AbstractWorldMap{
         this.height = height;
         this.maks = new Vector2d(width - 1, height - 1);
         this.mini = new Vector2d(0, 0);
-        this.map = new MapVisualizer(this);
+        this.mapVis = new MapVisualizer(this);
     }
-
-    @Override
-    public void maks() {
-    }
-
-    @Override
-    public void lower(){}
 
     @Override
     public boolean canMoveTo(Vector2d position) {
@@ -38,9 +32,8 @@ public class RectangularMap extends AbstractWorldMap{
             animal.addObserver(this);
             return true;
         }
-        return false;
+        throw new IllegalArgumentException(animal.getPosition().toString() + "is occupied, you can't place there another animal. :(");
     }
-
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
         AbstractWorldElement animal = this.objects.get(oldPosition);
@@ -49,6 +42,6 @@ public class RectangularMap extends AbstractWorldMap{
     }
 
     public String toString() {
-        return this.map.draw(mini, maks);
+        return this.mapVis.draw(mini, maks);
     }
 }
