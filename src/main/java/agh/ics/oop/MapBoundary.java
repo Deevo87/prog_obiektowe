@@ -30,9 +30,11 @@ public class MapBoundary implements IPositionChangeObserver{
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
         AbstractWorldElement oldObject = this.map.objectAt(oldPosition);
+//        System.out.println(oldObject);
         removeFromSet(oldObject);
 
         AbstractWorldElement newObject = this.map.objectAt(newPosition);
+//        System.out.println(newObject);
         addToSet(newObject);
     }
 
@@ -43,6 +45,11 @@ public class MapBoundary implements IPositionChangeObserver{
 //        for (AbstractWorldElement e : setX) {
 //            System.out.println(e.getPosition());
 //        }
+//        System.out.println("******");
+//        for (AbstractWorldElement e : setY) {
+//            System.out.println(e.getPosition());
+//        }
+        System.out.println("-----");
             return new Vector2d(this.setX.first().getPosition().x, this.setY.first().getPosition().y);
     }
 

@@ -41,10 +41,8 @@ class AnimalTest {
 
     @Test
     void placeTestBoundries() {
-        assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map ,new Vector2d(4,-20))));
-    }
-    @Test
-    void placeTestTaken() {
-        assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map ,new Vector2d(2,2))));
+        assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map, new Vector2d(4, -20))));
+        assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map, new Vector2d(-20, -40))));
+        assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map, new Vector2d(2, 0))));
     }
 }

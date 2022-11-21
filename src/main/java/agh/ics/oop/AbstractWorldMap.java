@@ -22,5 +22,13 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     }
 
 
+    public Vector2d getLowerLeft() {
+        return lower;
+    }
+
+    public Vector2d getUpperRight() {
+        return maks;
+    }
+
 }
 

@@ -18,7 +18,7 @@ public class GrassField extends AbstractWorldMap {
         this.mapVis = new MapVisualizer(this);
         this.lower = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
         this.maks = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
-
+        calBounds();
         makeGrass(quantity);
     }
     void makeGrass(int quantity){
@@ -60,6 +60,7 @@ public class GrassField extends AbstractWorldMap {
             this.objects.put(animal.getPosition(), animal);
             animal.addObserver(this);
             this.mapBoundary.addToSet(animal);
+//            animal.addObserver(mapBoundary);
             return true;
         }
         throw new IllegalArgumentException(animal.getPosition().toString() + "is occupied, you can't place there another animal. :(");
@@ -71,25 +72,38 @@ public class GrassField extends AbstractWorldMap {
         AbstractWorldElement object = this.objects.get(newPosition);
         if (object instanceof Grass) {
             this.objects.remove(newPosition);
-            this.mapBoundary.removeFromSet(object);
             this.makeGrass(1);
+            this.mapBoundary.removeFromSet(object);
         }
         this.objects.remove(oldPosition);
         this.objects.put(newPosition, Animal);
         this.mapBoundary.positionChanged(oldPosition, newPosition);
     }
 
-    public void maks() {
+    public Vector2d upRight() {
         this.maks = this.mapBoundary.getUpperRight();
+        return this.mapBoundary.getUpperRight();
     }
 
-    public void lower() {
+    public Vector2d lowLeft() {
         this.lower =  this.mapBoundary.getLowerLeft();
+        return this.mapBoundary.getLowerLeft();
+    }
+
+    public void calBounds() {
+        int maxX = mapBoundary.getUpperRight().x;
+        int maxY = mapBoundary.getUpperRight().y;
+        int minX = mapBoundary.getLowerLeft().x;
+        int minY = mapBoundary.getLowerLeft().y;
+        this.lower = new Vector2d(minX, minY);
+        this.maks = new Vector2d(maxX, maxY);
+        System.out.println(this.lower);
+        System.out.println(this.maks);
+        Vector2d test1 = getLowerLeft();
     }
 
     public String toString() {
-        maks();
-        lower();
+        calBounds();
         return mapVis.draw(this.lower, this.maks);
     }
 }
