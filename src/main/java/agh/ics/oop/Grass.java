@@ -1,6 +1,11 @@
 package agh.ics.oop;
 
-public class Grass extends AbstractWorldElement{
+import javafx.scene.image.Image;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+public class Grass extends AbstractWorldElement implements IMapElement{
 
     private Vector2d grass_pos;
 
@@ -12,9 +17,13 @@ public class Grass extends AbstractWorldElement{
         return this.grass_pos;
     }
 
+    @Override
+    public Image getMapElImage() throws FileNotFoundException {
+        return new Image(new FileInputStream("src/main/resources/grass.png"));
+    }
+
     public String toString() {
         return "*";
     }
-
 
 }

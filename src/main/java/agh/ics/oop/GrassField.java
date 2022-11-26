@@ -16,10 +16,10 @@ public class GrassField extends AbstractWorldMap {
         this.quantity = quantity;
         this.objects = new HashMap<Vector2d, AbstractWorldElement>();
         this.mapVis = new MapVisualizer(this);
-        this.lower = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        this.maks = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
-        calBounds();
+        this.maks = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        this.lower = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
         makeGrass(quantity);
+        calBounds();
     }
     void makeGrass(int quantity){
         Random rand = new Random();
@@ -60,7 +60,6 @@ public class GrassField extends AbstractWorldMap {
             this.objects.put(animal.getPosition(), animal);
             animal.addObserver(this);
             this.mapBoundary.addToSet(animal);
-//            animal.addObserver(mapBoundary);
             return true;
         }
         throw new IllegalArgumentException(animal.getPosition().toString() + "is occupied, you can't place there another animal. :(");
@@ -74,10 +73,11 @@ public class GrassField extends AbstractWorldMap {
             this.objects.remove(newPosition);
             this.makeGrass(1);
             this.mapBoundary.removeFromSet(object);
+        } else {
+            this.objects.put(newPosition, Animal);
+            this.mapBoundary.positionChanged(oldPosition, newPosition);
+            this.objects.remove(oldPosition);
         }
-        this.objects.remove(oldPosition);
-        this.objects.put(newPosition, Animal);
-        this.mapBoundary.positionChanged(oldPosition, newPosition);
     }
 
     public Vector2d upRight() {

@@ -1,10 +1,14 @@
 package agh.ics.oop;
 
 
+import javafx.scene.image.Image;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Animal extends AbstractWorldElement{
+public class Animal extends AbstractWorldElement implements IMapElement{
 
     private IWorldMap map;
 
@@ -38,6 +42,18 @@ public class Animal extends AbstractWorldElement{
     public Vector2d getPosition(){
         return this.position;
     }
+
+    @Override
+    public Image getMapElImage() throws FileNotFoundException {
+        Image image = new Image(new FileInputStream("src/main/resources/up.png"));
+        return switch (this.orientation) {
+            case NORTH -> image = new Image(new FileInputStream("src/main/resources/up.png"));
+            case WEST -> image = new Image(new FileInputStream("src/main/resources/left.png"));
+            case SOUTH -> image = new Image(new FileInputStream("src/main/resources/down.png"));
+            case EAST -> image = new Image(new FileInputStream("src/main/resources/right.png"));
+        };
+    }
+
     public void move(MoveDirection direction){
         switch (direction){
             case RIGHT -> this.orientation = this.orientation.next();
