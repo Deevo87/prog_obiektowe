@@ -30,5 +30,6 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         return maks;
     }
 
+    public void calBounds() {}
 }
 

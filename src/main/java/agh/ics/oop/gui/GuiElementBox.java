@@ -13,8 +13,13 @@ import java.io.FileNotFoundException;
 public class GuiElementBox {
     VBox vbox = new VBox(0);
 
-    public GuiElementBox(IMapElement element) throws FileNotFoundException {
-        Image image = element.getMapElImage();
+    public GuiElementBox(IMapElement element){
+        Image image = null;
+        try {
+            image = element.getMapElImage();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(20);
         imageView.setFitHeight(20);

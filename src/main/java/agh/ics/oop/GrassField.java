@@ -90,16 +90,17 @@ public class GrassField extends AbstractWorldMap {
         return this.mapBoundary.getLowerLeft();
     }
 
+    @Override
     public void calBounds() {
         int maxX = mapBoundary.getUpperRight().x;
         int maxY = mapBoundary.getUpperRight().y;
         int minX = mapBoundary.getLowerLeft().x;
         int minY = mapBoundary.getLowerLeft().y;
+//        System.out.println("-------------------");
         this.lower = new Vector2d(minX, minY);
         this.maks = new Vector2d(maxX, maxY);
-        System.out.println(this.lower);
-        System.out.println(this.maks);
-        Vector2d test1 = getLowerLeft();
+//        System.out.println(this.lower);
+//        System.out.println(this.maks);
     }
 
     public String toString() {

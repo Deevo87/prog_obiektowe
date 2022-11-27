@@ -2,43 +2,65 @@ package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.util.List;
 
 public class App extends Application implements IMapChangeObserver{
-    private GridPane grid;
+    private GridPane grid = new GridPane();
+//    private TextField inputField;
+//    private VBox vbox;
+//    private HBox hbox;
+//    private Button button;
+
     private AbstractWorldMap map;
+    private ResetSimulationEngine engine;
     public void start(Stage primaryStage) throws FileNotFoundException {
         String[] args = getParameters().getRaw().toArray(new String[0]);
-        MoveDirection[] directions = new OptionsParser().parse(args);
+//        MoveDirection[] directions = new OptionsParser().parse(args);
         this.map = new GrassField(10);
         Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(8, 4)};
-        IEngine engine = new SimulationEngine(directions, this.map, positions);
-        System.out.println(this.map.toString());
-        engine.run();
-        System.out.println(this.map.toString());
+        engine = new ResetSimulationEngine(this.map, positions);
+        engine.addObserver(this);
+        // manual starting
+//        this.engine.setMoves(directions);
+//        System.out.println(this.map.toString());
+//        System.out.println(this.map.toString());
+//        engine.run();
+//        Thread engineThread = new Thread(engine);
+//        engineThread.start();
+        TextField inputField = new TextField();
+        Button button = new Button("MOVE");
+        HBox hbox = new HBox(button, inputField);
+        VBox vbox = new VBox(hbox, this.grid);
+        hbox.setAlignment(Pos.CENTER);
 
-        this.grid = new GridPane();
-        Scene scene = new Scene(this.grid, 600, 600);
+        button.setOnAction(click -> {
+            MoveDirection[] directions = new OptionsParser().parse(inputField.getText().split(" "));
+            this.engine.setMoves(directions);
+            Thread engineThread = new Thread(engine);
+            engineThread.start();
+            hbox.setAlignment(Pos.CENTER);
+        });
+
+        Scene scene = new Scene(vbox, 1000, 1000);
 
         placeElements();
 
-        this.grid.setGridLinesVisible(true);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    public void placeElements() throws FileNotFoundException {
+    public void placeElements(){
         Vector2d lowerLeft = this.map.getLowerLeft();
         Vector2d upperRight = this.map.getUpperRight();
 
@@ -86,9 +108,16 @@ public class App extends Application implements IMapChangeObserver{
                 }
             }
         }
+        this.grid.setGridLinesVisible(true);
     }
     @Override
     public void reset() {
-        this.grid.getChildren().clear();
+        Platform.runLater( ()-> {
+            this.grid.getChildren().clear();
+            this.grid.getRowConstraints().clear();
+            this.grid.getColumnConstraints().clear();
+            this.grid.setGridLinesVisible(false);
+            placeElements();
+        });
     }
 }
